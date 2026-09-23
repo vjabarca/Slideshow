@@ -1,33 +1,3 @@
-
-
-jobs:
-  build:
-    runs-on: windows-latest
-    steps:
-    - name: Check out repository
-      uses: actions/checkout@v4
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.11' # Change to your Python version
-
-    - name: Install dependencies
-      run: |
-        pip install pyinstaller argparse yaml subprocess os shutil time sys # Add any other dependencies your script needs
-    
-    - name: Build EXE
-      run: pyinstaller --onefile --add-data "config_slideshow.yml;." Update_Slideshow.py
-
-    - name: Upload Executable
-      uses: actions/upload-artifact@v4
-      with:
-        name: windows-exe
-        path: dist/main.exe
-
-
-
-
 name: Build Windows EXE
 
 on:
@@ -64,9 +34,8 @@ jobs:
 
     - name: Build executable
       run: |
-        # Replace 'your_script.py' with the name of your main Python file
-        # The '--collect-data yaml' flag ensures PyYAML's metadata is bundled correctly
-        pyinstaller --onefile --collect-data yaml your_script.py
+        # Bundles 'config.yml' into the root directory of the internal EXE filesystem
+        pyinstaller --onefile --add-data "config_slideshow.yml;." --collect-data yaml Update_Slideshow.py
 
     - name: Upload Artifact
       uses: actions/upload-artifact@v4
