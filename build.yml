@@ -32,8 +32,3 @@ jobs:
           name: MyApp-exe
           path: dist/MyApp.exe
 
-      - name: Create Release and Upload
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/MyApp.exe
