@@ -33,44 +33,22 @@ def backup_delete(source , files_list, destination_path):
 
 
 ######### Setup #########
-def parse_config_data(config_yml):
-    with open(config_yml, "r") as file:
-        config_data = yaml.safe_load(file)
-    return config_data
+def load_config():
+    with open(resource_path("config_slideshow.yml")) as f:
+        return yaml.safe_load(f)
 
-def parse_input():
-    parser = argparse.ArgumentParser(
-        description="This script will look for duplicate files inside directories and between all directories inside a pre-designated directory")
-    parser.add_argument("-y", "--yml", help="Path for the configuration file", required=True, type=str, dest="yml_file")
-    return parser.parse_args()
-
-def get_asset_path_OLD(relative_path):
-    """ Get absolute path to the resource, works for dev and for PyInstaller """
+def resource_path(relative_path):
+    """Get absolute path to resource, works for dev and for PyInstaller .exe"""
     try:
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        base_path = sys._MEIPASS
-    except Exception:
+        base_path = sys._MEIPASS  # PyInstaller creates a temp folder and stores path here
+    except AttributeError:
         base_path = os.path.abspath(".")
     return os.path.join(base_path, relative_path)
-
-def get_resource_path(relative_path):
-    """ Get absolute path to the resource, works for dev and for PyInstaller """
-    if hasattr(sys, '_MEIPASS'):
-        # PyInstaller creates a temp folder and stores path in _MEIPASS
-        return os.path.join(sys._MEIPASS, relative_path)
-    return os.path.join(os.path.abspath("."), relative_path)
 
 
 ######### Main #########
 def main():
-    # Use this function to load config file
-    # config_path = get_asset_path("config_slideshow.yml")
-    config_path = get_resource_path("config_slideshow.yml")
-    # Parse user inputs
-    args = parse_input()
-    # Parse yml_file
-    config_data = parse_config_data(args.yml_file)
-
+    config_data = load_config()
 
     print(f"\nRemoving junk files {config_data['directories']['source']}")
     start_time = time.time()

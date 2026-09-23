@@ -1,44 +1,39 @@
-name: Build Windows EXE
+name: Build EXE
 
 on:
   push:
-    branches: [ "main" ] # Triggers the build whenever you push to main
-  workflow_dispatch:     # Allows you to manually trigger the build from GitHub
+    branches: [ main ]
+  workflow_dispatch:   # lets you trigger it manually from the Actions tab
 
 jobs:
   build:
-    runs-on: windows-latest # Required to build a Windows .exe natively
+    runs-on: windows-latest   # exe must be built on Windows
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        # If you have external packages, uncomment the line below:
-        # pip install -r requirements.txt
-        pip install argparse
-        pip install pyyaml
-        pip install subprocess
-        pip install os
-        pip install shutil
-        pip install time
-        pip install sys
-        pip install pyinstaller
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install pyinstaller
 
-    - name: Build executable
-      run: |
-        # Bundles 'config.yml' into the root directory of the internal EXE filesystem
-        pyinstaller --onefile --add-data "config_slideshow.yml;." --collect-data yaml Update_Slideshow.py
+      - name: Build EXE
+        run: pyinstaller --onefile --name MyApp --add-data "config_slideshow.yml;." Update_Slideshow.py
 
-    - name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: Windows-Executable
-        path: dist/*.exe  # PyInstaller outputs the final EXE into the 'dist' folder
+      - name: Upload EXE as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyApp-exe
+          path: dist/MyApp.exe
+
+      - name: Create Release and Upload
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/MyApp.exe
