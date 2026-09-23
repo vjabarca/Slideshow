@@ -42,4 +42,4 @@ jobs:
       with:
         name: Windows-Executable
         path: dist/*.exe  # PyInstaller outputs the final EXE into the 'dist' folder
-        *.yml
+        # *.yml
