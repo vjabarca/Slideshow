@@ -1,0 +1,29 @@
+name: Build Windows EXE
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11' # Change to your Python version
+
+    - name: Install dependencies
+      run: |
+        pip install pyinstaller pyyaml # Add any other dependencies your script needs
+
+    - name: Build EXE
+      run: pyinstaller --onefile --add-data "config.yml;." main.py
+
+    - name: Upload Executable
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-exe
+        path: dist/main.exe
+

@@ -1,0 +1,16 @@
+directories:
+  # source: "F:\\Pictures & Clips" # PC
+  # source: "/Volumes/My Book/_SCRIPTING_DIR" #Mac #TESTING
+  # source: "/Volumes/My Book/Pictures & Clips" #Mac
+  source: "/Volumes/USB_Storage/Surface_Slideshow" #PC
+
+  # destination: "F:\\Desktop Background" # PC
+  # destination: "/Volumes/My Book/_SCRIPTING_TEST" #Mac #TESTING
+  # destination: "/Users/vabarca/Desktop/Desktop Background" #Mac
+  destination: "/Users/vabarca/Desktop/Desktop Background" #PC
+files:
+  # video_extensions: ["mp4", "MP4", "3gp", "3GP", "mov", "MPG", "AVI", "gif"]
+  # audio_extensions: ["opus", "ogg", "mp3"]
+  junk_files: ["Thumbs.db", "Desktop.ini", ".DS_Store"]
+
+
